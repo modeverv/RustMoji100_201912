@@ -136,7 +136,7 @@ pub fn heads(path: &Path,n:usize) -> Result<Vec<String>> {
     let f = File::open(path)?;
     let br = BufReader::new(f);
     Ok(br.lines().take(n).map(|line| {
-        line.unwrap()// + "\n"
+        line.unwrap()
     }).collect::<Vec<String>>())
 }
 
