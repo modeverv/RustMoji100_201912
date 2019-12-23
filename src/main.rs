@@ -55,6 +55,27 @@ fn main() {
             });
     }
     {
-        
+        let vc = vec!("03:10","02:55","03:30","03:20");
+        let allsec:i32 = vc.iter().map(|s| mojiretsu::str2sec(s).unwrap()).fold(0,|result, t| result + t);
+        println!("all sec is {}",allsec);
+        println!("formated is {}",mojiretsu::format_sec(allsec));
+    }
+    {
+        // 16
+        let vc = mojiretsu::split_file(Path::new("src/main.rs"), 3);
+        if let Ok(vc) = vc {
+            for i in vc {
+                println!("{}\n\n",i);
+            }
+        }
+    }
+    {
+        // 17
+        let vc = mojiretsu::sort_uniq(Path::new("17.txt"));
+        if let Ok(vc) = vc {
+            for item in vc {
+                println!("{}",item);
+            }
+        }
     }
 }

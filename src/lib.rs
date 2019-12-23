@@ -148,3 +148,45 @@ pub fn tails(path:&Path,n:usize) ->Result<Vec<String>> {
     br.lines().for_each(|l| lines.push(l.unwrap()));
     Ok(lines.iter().rev().take(n).rev().map(|l| {String::from(l)} ).collect::<Vec<String>>())
 }
+
+pub fn str2sec(str: &str) -> Result<i32> {
+    let v:Vec<&str> = str.split(":").collect();
+    let min:i32 = v[0].parse().unwrap();
+    let sec:i32 = v[1].parse().unwrap();
+    Ok((min * 60) + sec)
+}
+
+pub fn format_sec(sec: i32) -> String {
+    let min = (sec / 60) as i32;
+    let secc = sec - min * 60 as i32;
+    format!("{:02}:{:02}",min,secc)
+}
+
+/// 16. ファイルをN分割する
+/// 自然数Nをコマンドライン引数などの手段で受け取り，
+/// 入力のファイルを行単位でN分割せよ．同様の処理をsplitコマンドで実現せよ
+pub fn split_file(path: &Path,n:usize) -> Result<Vec<String>> {
+    let f = File::open(path)?;
+    let br = BufReader::new(f);
+    let lines = br.lines().collect::<Result<Vec<_>>>();
+    lines.and_then(|lines| Ok(lines.chunks(n).map(|chunk| chunk.join("\n")).collect()))
+}
+
+/// 17. １列目の文字列の異なり
+/// 1列目の文字列の種類（異なる文字列の集合）を求めよ．
+/// 確認にはsort, uniqコマンドを用いよ．
+pub fn sort_uniq(path: &Path) -> Result<Vec<String>>{
+    let f = File::open(path)?;
+    let br = BufReader::new(f);
+    let mut map = HashMap::new();
+    for line in br.lines() {
+        //println!("{}",line.unwrap());
+        map.entry(line.unwrap()).or_insert(1);
+    }
+    let mut vec:Vec<String> = vec![];
+    for (k,_) in map {
+        vec.push(k);
+    }
+    vec.sort();
+    Ok(vec)
+}

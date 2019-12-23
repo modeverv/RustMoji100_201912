@@ -25,5 +25,5 @@ else
   git_init $1;
   git_commit_push $2;
 fi
-hub browse
+#hub browse
 
