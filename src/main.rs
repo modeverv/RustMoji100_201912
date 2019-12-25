@@ -78,4 +78,13 @@ fn main() {
             }
         }
     }
+    {
+        // 18
+        let vc = mojiretsu::sort_by_column(Path::new("sec2.txt"),2);
+        if let Ok(vc) = vc {
+            for item in vc {
+                println!("{}",item);
+            }
+        }
+    }
 }
