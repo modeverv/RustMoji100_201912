@@ -209,7 +209,31 @@ pub fn sort_by_column(path: &Path,n:usize) -> Result<Vec<String>> {
     })
 }
 
-                    
+/// 19. 各行の1コラム目の文字列の出現頻度を求め，出現頻度の高い順に並べる
+/// 各行の1列目の文字列の出現頻度を求め，
+/// その高い順に並べて表示せよ．
+/// 確認にはcut, uniq, sortコマンドを用いよ．
+pub fn sort_by_freakency(path: &Path,) -> Result<Vec<String>> {
+    let file = File::open(path)?;
+    let bufr = BufReader::new(file);
+    let lines = bufr.lines().collect::<Result<Vec<_>>>();
+    let mut counter: HashMap<String,usize> = HashMap::new();
+    lines.and_then(|lines|
+        Ok(lines.into_iter().for_each(|line| {
+            let key = line.split_whitespace().next().unwrap_or("");
+            if counter.contains_key(key) {
+                *counter.get_mut(key).unwrap() += 1;
+            } else {
+                counter.insert(key.to_string(),1);
+            }
+        })).and_then(|_| {
+            let mut tmp = counter.into_iter().collect::<Vec<_>>();
+            tmp.sort_by(|a,b| b.1.cmp(&a.1));
+            Ok(tmp.into_iter().map(|(k,_)| k).collect())
+        })
+    )
+}
+                     
 
 
 

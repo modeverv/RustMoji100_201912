@@ -87,4 +87,14 @@ fn main() {
             }
         }
     }
+    {
+        // 19
+        println!("19");
+        let vc = mojiretsu::sort_by_freakency(Path::new("sec2.txt"));
+        if let Ok(vc) = vc {
+            for line in vc {
+                println!("{}",line);
+            }
+        }
+    }
 }
