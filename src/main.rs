@@ -97,4 +97,19 @@ fn main() {
             }
         }
     }
+    {
+        // 20
+        println!("20");
+        if let Some(article) =  mojiretsu::json_read_about(Path::new("a.gz"), "イギリス") {
+            println!("{:?}",article);
+        }
+
+    }
+    {
+        // 21
+        // articleが降りてこないので実験不可能
+    }
+    {
+
+    }
 }

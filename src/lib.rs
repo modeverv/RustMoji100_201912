@@ -234,9 +234,40 @@ pub fn sort_by_freakency(path: &Path,) -> Result<Vec<String>> {
     )
 }
                      
+use serde::{Serialize, Deserialize};
+use flate2::read::GzDecoder;
+extern crate serde_json;
+use serde_json::{Deserializer};
+use serde_json::StreamDeserializer;
 
+#[derive(Deserialize,Debug)]
+pub struct Article {
+    pub text: String,
+    pub title: String,
+}
 
+/// 20. JSONデータの読み込み
+/// Wikipedia記事のJSONファイルを読み込み，
+/// 「イギリス」に関する記事本文を表示せよ．
+/// 問題21-29では，ここで抽出した記事本文に対して実行せよ．
+/// 取得したファイルを見てみると
+/// {"text": "本文","title": "タイトル"}
+/// が列挙されているという形だったので、この形に限定して考えました。
+pub fn json_read_about(path: &Path, about: &str) -> Option<Article> {
+    File::open(path).ok()
+        .and_then(|file| Some(GzDecoder::new(file)))
+        .and_then(|gz| Deserializer::from_reader(gz).into_iter::<Article>()
+        .filter(|v| if let Ok(v) = v { v.title == about } else { false })
+                        .map(|v| v.unwrap())
+                        .next())
+}
 
+/// 21 カテゴリ行を含む行を抽出
+use regex::Regex;
+pub fn category_line(article: &Article) -> Vec<&str> {
+    let regex = Regex::new(r"\[\[Category.*\]\]").unwrap();
+    article.text.lines().filter(|l| regex.is_match(l)).collect()
+}
 
 
 
